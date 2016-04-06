@@ -1,0 +1,363 @@
+<!DOCTYPE html>
+<html>
+<meta charset='utf-8'>
+<style>
+
+.link {
+  fill: none;
+  stroke: #0D47A1;
+  stroke-width: 1.5px;
+}
+
+#licensing {
+  fill: green;
+}
+
+.link.licensing {
+  stroke: green;
+}
+
+.link.resolved {
+  stroke-dasharray: 0,2 1;
+}
+
+circle {
+  fill: #E3F2FD;
+  stroke: #0D47A1;
+  stroke-width: 1.5px;
+}
+
+text {
+  font: 10px sans-serif;
+  pointer-events: none;
+  text-shadow: 0 1px 0 #fff, 1px 0 0 #fff, 0 -1px 0 #fff, -1px 0 0 #fff;
+}
+
+</style>
+<body>
+<script src='http://d3js.org/d3.v3.min.js'></script>
+<script>
+
+var links = [
+    {'source': 0, 'target': 1, 'okreni':'ne', 'id':0, 'bond': 'a->b,c a->b,c a->b,c'},
+    {'source': 1, 'target': 0, 'okreni':'ne', 'bond': 'a->b,c a->b,c a->b,c', 'id':1},
+    {'source': 1, 'target': 2, 'okreni':'ne', 'bond': 'a->b,c a->b,c a->b,c', 'id':2},
+//{'source': 0, 'target': 2,  'bond': 'mmm','id':''},
+   //{'source': 2, 'target': 0,  'bond': 'eee','id':''},
+    //{'source': 2, 'target': 1,  'bond': 'mmm','id':''},
+    {'source': 2, 'target': 3, 'okreni':'ne', 'bond': 'a->b,c a->b,c a->b,c', 'id':3},
+    {'source': 4, 'target': 2, 'okreni':'ne', 'bond': 'a->b,c a->b,c a->b,c', 'id':4},
+    {'source': 2, 'target': 2, 'okreni':'ne', 'bond': 'a->b,c a->b,c a->b,c', 'id':5},
+    {'source': 0, 'target': 0, 'okreni':'ne', 'bond': 'a->b,c a->b,c a->b,c', 'id':6},
+    {'source': 1, 'target': 1, 'okreni':'ne', 'bond': 'a->b,c a->b,c a->b,c', 'id':7},
+{'source': 3, 'target': 3, 'okreni':'ne', 'bond': 'a->b,c a->b,c a->b,c', 'id':8}
+
+  ];
+
+
+
+var nodes = [
+    {'atom': '0', 'size': 12, 'id': 0},
+    {'atom': '1', 'size': 12, 'id': 1},
+    {'atom': '2', 'size': 12, 'id': 2},
+    {'atom': '3', 'size': 12, 'id': 3},
+    {'atom': '4', 'size': 12, 'id': 4}
+  ];
+
+
+var width = 120*nodes.length,
+    height = 120*nodes.length;
+
+var force = d3.layout.force()
+    .nodes(nodes)
+    .links(links)
+    .size([width, height])
+    .linkDistance(150)
+    .charge(-2000);
+
+
+    var svg = d3.select('body').append('svg')
+    .attr('width', width)
+    .attr('height', height);
+
+    force.start();
+for (var i = 0; i < 10000; ++i) force.tick();
+force.stop();
+
+
+
+svg.append('defs').selectAll('marker')
+    .data(['suit', 'licensing', 'resolved'])
+  .enter().append('marker')
+    .attr('id', 'arrow')
+    .attr('viewBox', '0 -5 10 10')
+    .attr('refX', 37)
+    .attr('refY', -3.5)
+    .attr('markerWidth', 6)
+    .attr('markerHeight', 6)
+    .attr('orient', 'auto')
+.attr('style','stroke:green;fill:#0D47A1')
+  .append('path')
+    .attr('d', 'M0 -5 L10 0 L0 5');
+
+var link = svg.append('svg:g').selectAll('g.link')
+    .data(force.links())
+  .enter().append('g')
+    .attr('class', 'link');
+
+var linkPath = link.append('svg:path')
+    .attr('class', function(d) { return 'link ' + d.type; })
+    .attr('marker-end', 'url(#arrow)');
+
+var labelPath = link.append('svg:path')
+    .attr('id', function(d) { return d.source.index + '_' + d.target.index; })
+    .attr('class', 'textpath');
+
+
+var circle = svg.append('g').selectAll('circle')
+    .data(nodes)
+  .enter().append('circle')
+.attr('id',function(d) {return 'circle_' + d.id})
+    .attr('r', 25);
+
+function changeCircleColor(id){
+	document.getElementById(id).style.fill = '#ccc';
+}
+
+
+svg.append('g').selectAll('circle')
+.data(nodes)
+.enter().append('circle')
+.attr('cx',function(d) { if(d.atom == '0')return d.x; else return;})
+.attr('cy',function(d) { if(d.atom == '0')return d.y; else return; })
+.attr('r',function(d) { if(d.atom == '0')return '20'; else return; })
+.attr('style','stroke:#0D47A1; stroke-width:2; stroke-width:2');
+ 
+svg.append('g').selectAll('polyline')
+.data(nodes).enter().append('polyline')
+.attr('points',function(d){
+	 var x=d.x;
+	 var y=d.y;
+   if(d.atom == '0'){
+
+	if(ProvjeriLijevo(d.atom,x,y)){
+		return ((x-25) + ',' + y + ' ' + (x-42) + ',' + (y-10) + ' ' + (x-42) + ',' + (y+10) + ' ' +  (x-25) + ',' + y);
+	}else if(ProvjeriDesno(d.atom,x,y)){
+		return ((x+25) + ',' + y + ' ' + (x+42) + ',' + (y-10) + ' ' + (x+42) + ',' + (y+10) + ' ' +  (x+25) + ',' + y);
+	}else if(ProvjeriDolje(d.atom,x,y)){
+		return (x + ',' + (y+25) + ' ' + (x+10) + ',' + (y+41) + ' ' + (x-10) + ',' + (y+42) + ' ' +  x + ',' + (y+25));
+	}else if(ProvjeriGore(d.atom,x,y)){
+		return (x + ',' + (y-25) + ' ' + (x+10) + ',' + (y-41) + ' ' + (x-10) + ',' + (y-42) + ' ' +  x + ',' + (y-25));
+	}   
+  }
+   else return;
+ })
+ .attr('style','stroke:#0D47A1; stroke-width:2; stroke-width:2; fill:#0D47A1');
+ //.attr('transform',Provjera);
+
+var text = svg.append('g').selectAll('text')
+    .data(nodes)
+  .enter().append('text')
+    .attr('x', -2)
+    .attr('y', 4)
+.attr('id',function(d) {return 'text_' + d.id})
+    .text(function(d) {return d.atom; });
+
+linkPath.attr('d', linkArc);
+labelPath.attr('d', function(d) {
+		if(d.source.id == d.target.id){return arcPath2(d,i);}
+    else return arcPath(d.source.x > d.target.x, d);
+	});
+circle.attr('transform', transform);
+text.attr('transform', transform);
+
+
+
+var label = svg.append('g').attr('id','label').selectAll('text') 
+.data(force.links())
+ .enter().append('text')
+.attr('x', function(d){
+  if(d.source==d.target){return '65';}
+  else{return '70';}
+})
+.attr('dy', function(d){
+	if(d.source.id == d.target.id){ 
+		if(d.okreni == 'ne') return -5;
+		if(d.okreni=='da')return 10;
+return 0;
+	 
+}
+	else if(d.source.x < d.target.x) return -5;
+ 	else return 10})
+.append('textPath')
+.attr('class', 'textpath')
+.attr('xlink:href',function(d,i) { return '#' + d.source.index + '_' + d.target.index;})
+.each(function(d){
+var el = d3.select(this);
+    var words = d.bond.split(' ');
+    el.text('');
+
+    for (var i = 0; i < words.length; i++) {
+        var tspan = el.append('tspan').text(words[i]);
+        if (i > 0)
+		if(d.source.x > d.target.x || d.okreni=='da'){tspan.attr('dy',10).attr('dx','-28');}
+            	else {tspan.attr('dy',-10).attr('dx','-28');}
+    }
+});
+
+	
+function linkArc(d) {
+  var dx = d.target.x - d.source.x,
+      dy = d.target.y - d.source.y,
+      dr = Math.sqrt(dx * dx + dy * dy);
+  
+      if(d.source==d.target){
+
+	if(ProvjeriGore(d.source.atom,d.source.x,d.source.y)){
+		return 'M'+d.source.x+' '+d.source.y+ ' ' +'C'+(d.source.x-50)+' ' +(d.source.y-90)+' '+ (d.source.x+50)+' ' +(d.source.y-90)+' ' +d.source.x +' '+d.source.y;
+	}else if(ProvjeriDolje(d.source.atom,d.source.x,d.source.y)){
+		return 'M'+d.source.x+' '+d.source.y+ ' ' +'C'+(d.source.x+50)+' ' +(d.source.y+90)+' '+ (d.source.x-50)+' ' +(d.source.y+90)+' ' +d.source.x +' '+d.source.y;
+	}else if(ProvjeriLijevo(d.source.atom,d.source.x,d.source.y)){
+		return 'M'+d.source.x+' '+d.source.y+ ' ' +'C'+(d.source.x-90)+' ' +(d.source.y+50)+' '+ (d.source.x-90)+' ' +(d.source.y-50)+' ' +d.source.x +' '+d.source.y;
+	}else if(ProvjeriDesno(d.source.atom,d.source.x,d.source.y)){
+		return 'M'+d.source.x+' '+d.source.y+ ' ' +'C'+(d.source.x+90)+' ' +(d.source.y-50)+' '+ (d.source.x+90)+' ' +(d.source.y+50)+' ' +d.source.x +' '+d.source.y;
+	}
+          
+      }else{
+return arcPath(false, d);
+      }
+}
+
+function transform(d) {
+  return 'translate(' + d.x + ',' + d.y + ')';
+}
+
+function arcPath(leftHand, d) {
+
+var dx = d.target.x - d.source.x,
+      dy = d.target.y - d.source.y,
+      dr = Math.sqrt(dx * dx + dy * dy);
+
+				if(leftHand){
+
+return 'M' + d.target.x + ',' + d.target.y + 'A' + dr + ',' + dr + ' 0 0,0 ' + d.source.x + ',' + d.source.y;}
+				else {
+
+	return 'M' + d.source.x + ',' + d.source.y + 'A' + dr + ',' + dr + ' 0 0,1 ' + d.target.x + ',' + d.target.y;
+
+}
+    
+}
+
+function arcPath2(d,i) {
+
+    if(ProvjeriGore(d.source.atom,d.source.x,d.source.y)){
+		return 'M'+d.source.x+' '+d.source.y+ ' ' +'C'+(d.source.x-50)+' ' +(d.source.y-90)+' '+ (d.source.x+50)+' ' +(d.source.y-90)+' ' +d.source.x +' '+d.source.y;
+	}else if(ProvjeriDolje(d.source.atom,d.source.x,d.source.y)){
+links[d.id].okreni = 'da';
+		return 'M'+d.source.x+' '+d.source.y+ ' ' +'C'+(d.source.x-50)+' ' +(d.source.y+90)+' '+(d.source.x+50)+' ' +(d.source.y+90)+' ' +d.source.x +' '+d.source.y;
+
+	}else if(ProvjeriLijevo(d.source.atom,d.source.x,d.source.y)){
+links[d.id].okreni = 'da';
+		return 'M'+d.source.x+' '+d.source.y+ ' ' +'C'+(d.source.x-90)+' ' +(d.source.y-50)+' '+(d.source.x-90)+' ' +(d.source.y+50)+' ' +d.source.x +' '+d.source.y;
+
+	}else if(ProvjeriDesno(d.source.atom,d.source.x,d.source.y)){
+		return 'M'+d.source.x+' '+d.source.y+ ' ' +'C'+(d.source.x+90)+' ' +(d.source.y-50)+' '+ (d.source.x+90)+' ' +(d.source.y+50)+' ' +d.source.x +' '+d.source.y;
+	}
+}
+
+function ProvjeriGore(refS,refX,refY){
+	for(var i=0; i < links.length; i++){
+		if(links[i].source.atom == refS && links[i].target.atom != refS){
+			if(links[i].target.x == refX || links[i].target.y == refY){return false;}
+			else if(links[i].target.x < refX && links[i].target.y < refY){
+				if((refX - links[i].target.x) < 10){return false;}
+			}else if(links[i].target.x > refX && links[i].target.y < refY){
+				if((links[i].target.x - refX) < 115){return false;}		
+			}
+			
+		}
+		if(links[i].source.atom != refS && links[i].target.atom == refS){
+			if(links[i].source.x == refX || links[i].source.y == refY){return false;}
+			else if(links[i].source.x < refX && links[i].source.y < refY){
+				if((refX - links[i].source.x) < 115){return false;}//115?
+			}else if(links[i].source.x > refX && links[i].source.y < refY){
+				if((links[i].source.x - refX) < 10){return false;}		
+			}
+		}
+	}
+return true;
+}
+
+function ProvjeriDolje(refS,refX,refY){
+	for(var i=0; i < links.length; i++){
+		if(links[i].source.atom == refS && links[i].target.atom != refS){
+			if(links[i].target.x == refX || links[i].target.y == refY){return false;}
+			else if(links[i].target.x < refX && links[i].target.y > refY){
+				if((refX - links[i].target.x) < 115){return false;}
+			}else if(links[i].target.x > refX && links[i].target.y > refY){
+				if((links[i].target.x - refX) < 10){return false;}		
+			}
+			
+		}
+		if(links[i].source.atom != refS && links[i].target.atom == refS){
+			if(links[i].source.x == refX || links[i].source.y == refY){return false;}
+			else if(links[i].source.x < refX && links[i].source.y > refY){
+				if((refX - links[i].source.x) < 10){return false;}//115?
+			}else if(links[i].source.x > refX && links[i].source.y > refY){
+				if((links[i].source.x - refX) < 115){return false;}		
+			}
+		}
+	}
+return true;
+}
+
+function ProvjeriLijevo(refS,refX,refY){
+	for(var i=0; i < links.length; i++){
+		if(links[i].source.atom == refS && links[i].target.atom != refS){
+			if(links[i].target.x == refX || links[i].target.y == refY){return false;}
+			else if(links[i].target.x < refX && links[i].target.y > refY){
+				if((links[i].target.y - refY) < 10){return false;}
+			}else if(links[i].target.x < refX && links[i].target.y < refY){
+				if((refY - links[i].target.y) < 115){return false;}		
+			}
+			
+		}
+		if(links[i].source.atom != refS && links[i].target.atom == refS){
+			if(links[i].source.x == refX || links[i].source.y == refY){return false;}
+			else if(links[i].source.x < refX && links[i].source.y > refY){
+				if((links[i].source.y - refY) < 115){return false;}//115?
+			}else if(links[i].source.x < refX && links[i].source.y < refY){
+				if((refY - links[i].source.y) < 10){return false;}		
+			}
+		}
+	}
+return true;
+}
+
+function ProvjeriDesno(refS,refX,refY){
+	for(var i=0; i < links.length; i++){
+		if(links[i].source.atom == refS && links[i].target.atom != refS){
+			if(links[i].target.x == refX || links[i].target.y == refY){return false;}
+			else if(links[i].target.x > refX && links[i].target.y < refY){
+				if((refY - links[i].target.y) < 10){return false;}
+			}else if(links[i].target.x > refX && links[i].target.y > refY){
+				if((links[i].target.y - refY) < 115){return false;}		
+			}
+			
+		}
+		if(links[i].source.atom != refS && links[i].target.atom == refS){
+			if(links[i].source.x == refX || links[i].source.y == refY){return false;}
+			else if(links[i].source.x > refX && links[i].source.y < refY){
+				if((refY - links[i].source.y) < 115){return false;}//115?
+			}else if(links[i].source.x > refX && links[i].source.y > refY){
+				if((links[i].source.y - refY) < 10){return false;}		
+			}
+		}
+	}
+return true;
+}
+
+	</script>
+ </body>
+</html>

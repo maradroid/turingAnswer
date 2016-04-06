@@ -1,0 +1,142 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@color/white_color">
+
+    <HorizontalScrollView
+        android:id="@+id/scroll_view"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="20dp"
+        android:layout_marginTop="20dp">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="center"
+            android:layout_gravity="center_horizontal"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="(q"
+                android:textSize="20sp"
+                android:textColor="#4c4c4c"
+                android:fontFamily="sans-serif-medium"/>
+
+            <EditText
+                android:id="@+id/et_trenutno_stanje"
+                android:layout_width="23dp"
+                android:layout_height="wrap_content"
+                android:textSize="17sp"
+                android:textColor="#1E88E5"
+                android:maxLength="1"
+                android:fontFamily="sans-serif-medium"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text=", "
+                android:textSize="20sp"
+                android:textColor="#4c4c4c"
+                android:fontFamily="sans-serif-medium"/>
+
+            <EditText
+                android:id="@+id/et_procitana_vrijednost"
+                android:layout_width="22dp"
+                android:layout_height="wrap_content"
+                android:textSize="17sp"
+                android:textColor="#1E88E5"
+                android:maxLength="1"
+                android:fontFamily="sans-serif-medium"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text=") = (q"
+                android:textSize="20sp"
+                android:textColor="#4c4c4c"
+                android:fontFamily="sans-serif-medium"/>
+
+            <EditText
+                android:id="@+id/et_buduce_stanje"
+                android:layout_width="22dp"
+                android:layout_height="wrap_content"
+                android:textSize="17sp"
+                android:textColor="#1E88E5"
+                android:maxLength="1"
+                android:fontFamily="sans-serif-medium"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text=", "
+                android:textSize="20sp"
+                android:textColor="#4c4c4c"
+                android:fontFamily="sans-serif-medium"/>
+
+            <EditText
+                android:id="@+id/et_vrijednost_pisanja"
+                android:layout_width="22dp"
+                android:layout_height="wrap_content"
+                android:textSize="17sp"
+                android:textColor="#1E88E5"
+                android:maxLength="1"
+                android:fontFamily="sans-serif-medium"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text=", "
+                android:textSize="20sp"
+                android:textColor="#4c4c4c"
+                android:fontFamily="sans-serif-medium"/>
+
+            <EditText
+                android:id="@+id/et_pomak"
+                android:layout_width="22dp"
+                android:layout_height="wrap_content"
+                android:textSize="17sp"
+                android:textColor="#1E88E5"
+                android:maxLength="1"
+                android:fontFamily="sans-serif-medium"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text=")"
+                android:textSize="20sp"
+                android:textColor="#4c4c4c"
+                android:fontFamily="sans-serif-medium"/>
+
+        </LinearLayout>
+    </HorizontalScrollView>
+
+    <Button
+        android:id="@+id/btn_submit"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="uredu"
+        android:layout_below="@id/scroll_view"
+        android:layout_alignParentRight="true"
+        android:background="@color/white_color"
+        android:textColor="@color/main_color"
+        android:textStyle="bold"/>
+
+    <Button
+        android:id="@+id/btn_cancel"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="odustani"
+        android:layout_below="@id/scroll_view"
+        android:layout_toLeftOf="@id/btn_submit"
+        android:background="@color/white_color"
+        android:textColor="@color/main_color"
+        android:textStyle="bold"/>
+
+
+</RelativeLayout>

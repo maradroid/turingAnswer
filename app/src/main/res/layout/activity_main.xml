@@ -1,0 +1,289 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/white_color">
+
+    <!-- toolbar -->
+    <include
+        layout="@layout/tool_bar"
+        android:id="@+id/tool_bar"/>
+
+    <!-- HEADER: POSTAVKE NIZA -->
+    
+    <LinearLayout
+        android:id="@+id/title_postavke_niza_ll"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="@string/postavke_niza"
+            android:textSize="20sp"
+            android:textColor="@color/main_color"
+            android:layout_marginLeft="15dp"
+            android:layout_marginBottom="5dp"
+            android:layout_marginTop="10dp"
+            android:fontFamily="sans-serif-medium"/>
+
+
+    </LinearLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@color/main_color"/>
+
+    <!-- ULAZNI NIZ -->
+
+    <LinearLayout
+        android:id="@+id/ulazni_niz_ll"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_marginTop="10dp"
+        android:layout_marginLeft="25dp"
+        android:layout_marginRight="25dp">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/ulazni_niz"
+            android:textSize="15sp"
+            android:gravity="center"
+            android:textColor="#1E88E5"
+            android:fontFamily="sans-serif-medium"/>
+
+        <EditText
+            android:id="@+id/ulazni_niz_et"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/edit_text_background"
+            android:textSize="23sp"
+            android:gravity="center"
+            android:textColor="@color/text_gray_color"
+            android:layout_marginLeft="5dp"
+            android:fontFamily="sans-serif-medium"/>
+    </LinearLayout>
+
+    <!-- PRIHVACENO STANJE -->
+
+    <LinearLayout
+        android:id="@+id/prihvaceno_stanje_ll"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_marginTop="10dp"
+        android:layout_marginLeft="25dp"
+        android:layout_marginRight="25dp">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/prihvaceno_stanje"
+            android:textSize="15sp"
+            android:gravity="center"
+            android:textColor="#1E88E5"
+            android:fontFamily="sans-serif-medium"/>
+
+        <EditText
+            android:id="@+id/prihvaceno_stanje_et"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/edit_text_background"
+            android:textSize="23sp"
+            android:gravity="center"
+            android:textColor="@color/text_gray_color"
+            android:layout_marginLeft="5dp"
+            android:fontFamily="sans-serif-medium"/>
+    </LinearLayout>
+
+    <!-- PRAZNO MJESTO -->
+
+    <LinearLayout
+        android:id="@+id/prazno_mjesto_ll"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_marginTop="10dp"
+        android:layout_marginLeft="25dp"
+        android:layout_marginRight="25dp">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/prazno_mjesto"
+            android:textSize="15sp"
+            android:gravity="center"
+            android:textColor="#1E88E5"
+            android:fontFamily="sans-serif-medium"/>
+
+        <EditText
+            android:id="@+id/prazno_mjesto_et"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/edit_text_background"
+            android:textSize="23sp"
+            android:gravity="center"
+            android:textColor="@color/text_gray_color"
+            android:layout_marginLeft="5dp"
+            android:fontFamily="sans-serif-medium"/>
+    </LinearLayout>
+
+    <!-- BEZUVJETNI PRIJELAZ -->
+
+    <LinearLayout
+        android:id="@+id/bezuvjetni_prijelaz_ll"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_marginTop="10dp"
+        android:layout_marginLeft="25dp"
+        android:layout_marginRight="25dp">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/bezuvjetni_prijelaz"
+            android:textSize="15sp"
+            android:gravity="center"
+            android:textColor="#1E88E5"
+            android:fontFamily="sans-serif-medium"/>
+
+        <EditText
+            android:id="@+id/bezuvjetni_prijelaz_et"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/edit_text_background"
+            android:textSize="23sp"
+            android:gravity="center"
+            android:textColor="@color/text_gray_color"
+            android:layout_marginLeft="5dp"
+            android:fontFamily="sans-serif-medium"/>
+    </LinearLayout>
+
+    <!-- HEADER: PRAVILA -->
+
+    <LinearLayout
+        android:id="@+id/title_funkcije_prijelaza_ll"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_marginTop="20dp">
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="@string/funkcije_prijelaza"
+            android:textSize="20sp"
+            android:textColor="@color/main_color"
+            android:layout_marginLeft="15dp"
+            android:layout_marginBottom="5dp"
+            android:layout_marginTop="10dp"
+            android:fontFamily="sans-serif-medium"/>
+
+        <LinearLayout
+            android:id="@+id/new_function_ll"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:gravity="center"
+            android:onClick="addNewFunctionButton">
+
+            <ImageView
+                android:layout_width="28dp"
+                android:layout_height="28dp"
+                android:src="@mipmap/ic_action_new"
+                android:layout_marginLeft="15dp"
+                android:layout_marginRight="15dp"/>
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@color/main_color"/>
+
+    <!-- CONTAINER: PRAVILA + BUTTONS -->
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <!-- CONTAINER: BUTTONS -->
+
+        <LinearLayout
+            android:id="@+id/action_ll"
+            android:orientation="horizontal"
+            android:layout_width="fill_parent"
+            android:layout_height="50dp"
+            android:background="@color/main_color"
+            android:gravity="center"
+            android:layout_alignParentBottom="true"
+            android:layout_centerHorizontal="true">
+
+            <Button
+                android:id="@+id/provjeri_btn"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="@string/provjeri"
+                android:textAllCaps="false"
+                android:textColor="@color/white_color"
+                android:textSize="15sp"
+                android:fontFamily="sans-serif-medium"
+                android:background="@color/main_color"
+                android:gravity="center"
+                android:onClick="checkButton"/>
+
+            <Button
+                android:id="@+id/automat_btn"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="@string/automat"
+                android:textAllCaps="false"
+                android:textColor="@color/white_color"
+                android:textSize="15sp"
+                android:fontFamily="sans-serif-medium"
+                android:background="@color/main_color"
+                android:gravity="center"
+                android:onClick="automateButton"/>
+
+            <Button
+                android:id="@+id/simulacija_btn"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="@string/simulacija"
+                android:textAllCaps="false"
+                android:textColor="@color/white_color"
+                android:textSize="15sp"
+                android:fontFamily="sans-serif-medium"
+                android:background="@color/main_color"
+                android:gravity="center"
+                android:onClick="simulationButton"/>
+
+        </LinearLayout>
+
+        <!-- LISTVIEW: PRAVILA -->
+
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/recycler_view"
+            android:scrollbars="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:clipToPadding="false"
+            android:background="@color/white_color"
+            android:layout_above="@+id/action_ll"/>
+
+    </RelativeLayout>
+
+</LinearLayout>
