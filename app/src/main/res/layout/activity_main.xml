@@ -60,7 +60,7 @@
             android:fontFamily="sans-serif-medium"/>
 
         <EditText
-            android:id="@+id/ulazni_niz_et"
+            android:id="@+id/et_tape"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="@drawable/edit_text_background"
@@ -92,7 +92,7 @@
             android:fontFamily="sans-serif-medium"/>
 
         <EditText
-            android:id="@+id/prihvaceno_stanje_et"
+            android:id="@+id/et_ac_state"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="@drawable/edit_text_background"
@@ -124,7 +124,7 @@
             android:fontFamily="sans-serif-medium"/>
 
         <EditText
-            android:id="@+id/prazno_mjesto_et"
+            android:id="@+id/et_empty_space"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="@drawable/edit_text_background"
@@ -156,7 +156,7 @@
             android:fontFamily="sans-serif-medium"/>
 
         <EditText
-            android:id="@+id/bezuvjetni_prijelaz_et"
+            android:id="@+id/et_unconditional_jump"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="@drawable/edit_text_background"
