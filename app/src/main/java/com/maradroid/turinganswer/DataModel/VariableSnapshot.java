@@ -1,5 +1,7 @@
 package com.maradroid.turinganswer.DataModel;
 
+import android.widget.TextView;
+
 import java.util.ArrayList;
 
 /**
@@ -22,6 +24,7 @@ public class VariableSnapshot {
     public VariableSnapshot() {
     }
 
+    /** prije racunanja **/
     public VariableSnapshot(ArrayList<String> tapeArray, ArrayList<Rules> rulesArray, String unconditionalJump, String emptySpace, String acState) {
         this.tapeArray = tapeArray;
         this.rulesArray = rulesArray;
@@ -30,11 +33,19 @@ public class VariableSnapshot {
         this.acState = acState;
     }
 
+    /** tijekom racunanja **/
     public VariableSnapshot(ArrayList<String> tapeArray, ArrayList<Rules> appRulesArray, String state, int head) {
         this.tapeArray = new ArrayList<>(tapeArray);
         this.appRulesArray = new ArrayList<>(appRulesArray);
         this.state = state;
         this.head = head;
+    }
+
+    /** za simulaciju **/
+    public VariableSnapshot(ArrayList<String> tapeArray, ArrayList<Rules> appRulesArray, String emptySpace) {
+        this.tapeArray = new ArrayList<>(tapeArray);
+        this.appRulesArray = new ArrayList<>(appRulesArray);
+        this.emptySpace = emptySpace;
     }
 
     public ArrayList<String> getTapeArray() {
