@@ -64,7 +64,10 @@ public class SimulationActivity extends SimulationBaseActivity {
     }
 
     private void setTape() {
-        tvTape.setText(snapshot.getTapeArray().toString());
+
+        if (snapshot.getTapeArray() != null) {
+            tvTape.setText(snapshot.getTapeArray().toString());
+        }
     }
 
     public void startSimulation(View view) {

@@ -2,6 +2,7 @@ package com.maradroid.turinganswer.Activity.Base;
 
 import android.os.AsyncTask;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.widget.TextView;
 
 import com.maradroid.turinganswer.DataModel.Rules;
@@ -33,12 +34,13 @@ public class SimulationBaseActivity extends AppCompatActivity {
 
         @Override
         protected String doInBackground(String... params) {
+            Log.e("maradroid", "simulation... " + rulesArray.size());
 
             for (Rules rule : rulesArray) {
 
-                String[] tempValues = getTempValues(rule);
+                String[] tempValues2 = getTempValues(rule);
 
-                publishProgress(tempValues);
+                publishProgress(tempValues2);
 
                 applyChanges(rule);
 
@@ -76,6 +78,7 @@ public class SimulationBaseActivity extends AppCompatActivity {
         protected void onPostExecute(String s) {
             super.onPostExecute(s);
 
+            tvTape.setText(tapeArray.toString());
             tvTape.setTextColor(getResources().getColor(R.color.main_color));
 
         }
@@ -141,7 +144,7 @@ public class SimulationBaseActivity extends AppCompatActivity {
 
         resetVariables();
 
-        this.tapeArray = snapshot.getTapeArray();
+        this.tapeArray.addAll(snapshot.getTapeArray());
         this.rulesArray = snapshot.getAppRulesArray();
         this.emptySpace = snapshot.getEmptySpace();
         this.tempRules = new StringBuilder();
@@ -150,11 +153,14 @@ public class SimulationBaseActivity extends AppCompatActivity {
 
     private void resetVariables() {
 
-        this.tapeArray = null;
+        this.tapeArray = new ArrayList<>();
         this.rulesArray = null;
         this.emptySpace = null;
         this.tempRules = null;
         this.tempTape = null;
+        this.head = 0;
+
+        tvTape.setTextColor(getResources().getColor(R.color.text_gray_color));
 
     }
 

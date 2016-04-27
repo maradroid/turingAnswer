@@ -38,7 +38,7 @@ text {
 <script src='http://d3js.org/d3.v3.min.js'></script>
 <script>
 
-var links = [
+/*var links = [
     {'source': 0, 'target': 1, 'okreni':'ne', 'id':0, 'bond': 'a->b,c a->b,c a->b,c'},
     {'source': 1, 'target': 0, 'okreni':'ne', 'bond': 'a->b,c a->b,c a->b,c', 'id':1},
     {'source': 1, 'target': 2, 'okreni':'ne', 'bond': 'a->b,c a->b,c a->b,c', 'id':2},
@@ -52,17 +52,21 @@ var links = [
     {'source': 1, 'target': 1, 'okreni':'ne', 'bond': 'a->b,c a->b,c a->b,c', 'id':7},
 {'source': 3, 'target': 3, 'okreni':'ne', 'bond': 'a->b,c a->b,c a->b,c', 'id':8}
 
-  ];
+  ];*/
 
 
 
-var nodes = [
-    {'atom': '0', 'size': 12, 'id': 0},
-    {'atom': '1', 'size': 12, 'id': 1},
-    {'atom': '2', 'size': 12, 'id': 2},
-    {'atom': '3', 'size': 12, 'id': 3},
-    {'atom': '4', 'size': 12, 'id': 4}
-  ];
+/*var nodes = [
+    {atom: '0', size: 12, id: 0},
+    {atom: '1', size: 12, id: 1},
+    {atom: '2', size: 12, id: 2},
+    {atom: '3', size: 12, id: 3},
+    {atom: '4', size: 12, id: 4}
+  ];*/
+
+  var nodes = JSON.parse(sessionStorage.getItem("nodes"));
+  var links = JSON.parse(sessionStorage.getItem("links"));
+  //var nodes = [];
 
 
 var width = 120*nodes.length,
@@ -120,18 +124,40 @@ var circle = svg.append('g').selectAll('circle')
 .attr('id',function(d) {return 'circle_' + d.id})
     .attr('r', 25);
 
-function changeCircleColor(id){
-	document.getElementById(id).style.fill = '#ccc';
+function changeCircleColor(id, color){
+	document.getElementById(id).style.fill = color;
 }
+
+function changeFinalCircleColor(id, color){
+	document.getElementById(id).style.fill = color;
+	document.getElementById('circle_x').style.fill = color;
+}
+
+
+function setJSON(nodes, links){
+
+    sessionStorage.setItem("nodes", JSON.stringify(nodes));
+    sessionStorage.setItem("links", JSON.stringify(links));
+    window.location.reload();
+
+}
+
+/*window.onload = function() {
+    nodes = JSON.parse(sessionStorage.getItem("nodes"));
+    links = JSON.parse(sessionStorage.getItem("links"));
+}*/
+
+
 
 
 svg.append('g').selectAll('circle')
 .data(nodes)
 .enter().append('circle')
-.attr('cx',function(d) { if(d.atom == '0')return d.x; else return;})
-.attr('cy',function(d) { if(d.atom == '0')return d.y; else return; })
-.attr('r',function(d) { if(d.atom == '0')return '20'; else return; })
-.attr('style','stroke:#0D47A1; stroke-width:2; stroke-width:2');
+.attr('cx',function(d) { if(d.acc == 1)return d.x; else return;})
+.attr('cy',function(d) { if(d.acc == 1)return d.y; else return; })
+.attr('r',function(d) { if(d.acc == 1)return '20'; else return; })
+.attr('id','circle_x')
+.attr('style','stroke:#0D47A1; stroke-width:2');
  
 svg.append('g').selectAll('polyline')
 .data(nodes).enter().append('polyline')

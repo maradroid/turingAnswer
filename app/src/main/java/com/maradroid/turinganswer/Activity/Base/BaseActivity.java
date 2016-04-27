@@ -23,6 +23,7 @@ public class BaseActivity extends AppCompatActivity {
     private ArrayList<String> tapeArray;
     private ArrayList<Rules> rulesArray;
     private ArrayList<Rules> appRulesArray;
+    private ArrayList<Rules> stepRulesArray;
     private ArrayList<VariableSnapshot> snapshotArray;
 
     private Rules appRule;
@@ -68,7 +69,7 @@ public class BaseActivity extends AppCompatActivity {
                         appRule = appRulesArray.get(0);
                         appRulesArray.remove(0);
 
-                        VariableSnapshot snapshot = new VariableSnapshot(tapeArray, appRulesArray, state, head);
+                        VariableSnapshot snapshot = new VariableSnapshot(tapeArray, appRulesArray, stepRulesArray, state, head);
                         snapshotArray.add(snapshot);
                         applyRule();
 
@@ -121,11 +122,17 @@ public class BaseActivity extends AppCompatActivity {
 
         tapeArray.clear();
         tapeArray.addAll(snapshot.getTapeArray());
+
         Log.e("maradroid", "before " + appRulesArray.size());
         appRulesArray.clear();
         appRulesArray.addAll(snapshot.getAppRulesArray());
         Log.e("maradroid", "after " + appRulesArray.size());
+
+        stepRulesArray.clear();
+        stepRulesArray.addAll(snapshot.getStepRulesArray());
+
         snapshot.getAppRulesArray().remove(0);
+
         state = snapshot.getState();
 
         head = snapshot.getHead();
@@ -141,6 +148,8 @@ public class BaseActivity extends AppCompatActivity {
         tapeArray.set(head, appRule.getVrijednostPisanja());
 
         state = appRule.getBuduceStanje();
+
+        stepRulesArray.add(appRule);
 
         if(appRule.getPomak().equals("L") || appRule.getPomak().equals("l")){
 
@@ -164,6 +173,15 @@ public class BaseActivity extends AppCompatActivity {
             //return ("Neispravno definiran pomak!");
             Log.e("maradroid", "neispravno definiran pomak");
         }
+    }
+
+    public ArrayList<Rules> getStepRulesArray() {
+
+        if (stepRulesArray != null && stepRulesArray.size() > 0) {
+            return stepRulesArray;
+        }
+
+        return null;
     }
 
     private ArrayList<Rules> sortRulesArray(ArrayList<Rules> rules) {
@@ -208,6 +226,7 @@ public class BaseActivity extends AppCompatActivity {
         rulesArray = null;
         appRulesArray = new ArrayList<>();
         snapshotArray = new ArrayList<>();
+        stepRulesArray = new ArrayList<>();
 
         appRule = null;
 

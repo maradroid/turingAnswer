@@ -12,6 +12,7 @@ public class VariableSnapshot {
     private ArrayList<String> tapeArray;
     private ArrayList<Rules> rulesArray;
     private ArrayList<Rules> appRulesArray;
+    private ArrayList<Rules> stepRulesArray;
 
     private String state = "0";
     private String acState;
@@ -34,9 +35,10 @@ public class VariableSnapshot {
     }
 
     /** tijekom racunanja **/
-    public VariableSnapshot(ArrayList<String> tapeArray, ArrayList<Rules> appRulesArray, String state, int head) {
+    public VariableSnapshot(ArrayList<String> tapeArray, ArrayList<Rules> appRulesArray, ArrayList<Rules> stepRulesArray, String state, int head) {
         this.tapeArray = new ArrayList<>(tapeArray);
         this.appRulesArray = new ArrayList<>(appRulesArray);
+        this.stepRulesArray = new ArrayList<>(stepRulesArray);
         this.state = state;
         this.head = head;
     }
@@ -46,6 +48,12 @@ public class VariableSnapshot {
         this.tapeArray = new ArrayList<>(tapeArray);
         this.appRulesArray = new ArrayList<>(appRulesArray);
         this.emptySpace = emptySpace;
+    }
+
+    /** za automat **/
+    public VariableSnapshot(ArrayList<Rules> rulesArray, ArrayList<Rules> appRulesArray) {
+        this.rulesArray = rulesArray;
+        this.appRulesArray = appRulesArray;
     }
 
     public ArrayList<String> getTapeArray() {
@@ -118,5 +126,13 @@ public class VariableSnapshot {
 
     public void setAppRulesArray(ArrayList<Rules> appRulesArray) {
         this.appRulesArray = appRulesArray;
+    }
+
+    public ArrayList<Rules> getStepRulesArray() {
+        return stepRulesArray;
+    }
+
+    public void setStepRulesArray(ArrayList<Rules> stepRulesArray) {
+        this.stepRulesArray = stepRulesArray;
     }
 }

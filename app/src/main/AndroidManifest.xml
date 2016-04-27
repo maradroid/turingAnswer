@@ -20,6 +20,15 @@
             </intent-filter>
         </activity>
 
+        <activity
+            android:name=".Activity.CalculateSimulation.SimulationActivity">
+
+        </activity>
+        <activity
+            android:name=".Activity.AutomataSimulation.AutomateActivity">
+
+        </activity>
+
     </application>
 
 </manifest>
