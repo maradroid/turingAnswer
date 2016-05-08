@@ -42,13 +42,14 @@
     <!-- ULAZNI NIZ -->
 
     <LinearLayout
-        android:id="@+id/ulazni_niz_ll"
+        android:id="@+id/ll_tape"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
         android:layout_marginTop="10dp"
         android:layout_marginLeft="25dp"
-        android:layout_marginRight="25dp">
+        android:layout_marginRight="25dp"
+        android:onClick="inputSettingsButton">
 
         <TextView
             android:layout_width="wrap_content"
@@ -59,8 +60,8 @@
             android:textColor="#1E88E5"
             android:fontFamily="sans-serif-medium"/>
 
-        <EditText
-            android:id="@+id/et_tape"
+        <TextView
+            android:id="@+id/tv_tape"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="@drawable/edit_text_background"
@@ -74,13 +75,14 @@
     <!-- PRIHVACENO STANJE -->
 
     <LinearLayout
-        android:id="@+id/prihvaceno_stanje_ll"
+        android:id="@+id/ll_ac_state"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
         android:layout_marginTop="10dp"
         android:layout_marginLeft="25dp"
-        android:layout_marginRight="25dp">
+        android:layout_marginRight="25dp"
+        android:onClick="inputSettingsButton">
 
         <TextView
             android:layout_width="wrap_content"
@@ -91,8 +93,8 @@
             android:textColor="#1E88E5"
             android:fontFamily="sans-serif-medium"/>
 
-        <EditText
-            android:id="@+id/et_ac_state"
+        <TextView
+            android:id="@+id/tv_ac_state"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="@drawable/edit_text_background"
@@ -106,13 +108,14 @@
     <!-- PRAZNO MJESTO -->
 
     <LinearLayout
-        android:id="@+id/prazno_mjesto_ll"
+        android:id="@+id/ll_empty_space"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
         android:layout_marginTop="10dp"
         android:layout_marginLeft="25dp"
-        android:layout_marginRight="25dp">
+        android:layout_marginRight="25dp"
+        android:onClick="inputSettingsButton">
 
         <TextView
             android:layout_width="wrap_content"
@@ -123,8 +126,8 @@
             android:textColor="#1E88E5"
             android:fontFamily="sans-serif-medium"/>
 
-        <EditText
-            android:id="@+id/et_empty_space"
+        <TextView
+            android:id="@+id/tv_empty_space"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="@drawable/edit_text_background"
@@ -138,13 +141,14 @@
     <!-- BEZUVJETNI PRIJELAZ -->
 
     <LinearLayout
-        android:id="@+id/bezuvjetni_prijelaz_ll"
+        android:id="@+id/ll_unconditional_jump"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
         android:layout_marginTop="10dp"
         android:layout_marginLeft="25dp"
-        android:layout_marginRight="25dp">
+        android:layout_marginRight="25dp"
+        android:onClick="inputSettingsButton">
 
         <TextView
             android:layout_width="wrap_content"
@@ -155,8 +159,8 @@
             android:textColor="#1E88E5"
             android:fontFamily="sans-serif-medium"/>
 
-        <EditText
-            android:id="@+id/et_unconditional_jump"
+        <TextView
+            android:id="@+id/tv_unconditional_jump"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="@drawable/edit_text_background"
@@ -244,7 +248,7 @@
                 android:onClick="checkButton"/>
 
             <Button
-                android:id="@+id/automat_btn"
+                android:id="@+id/btn_automat"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
@@ -255,10 +259,11 @@
                 android:fontFamily="sans-serif-medium"
                 android:background="@color/main_color"
                 android:gravity="center"
-                android:onClick="automateButton"/>
+                android:onClick="automateButton"
+                android:enabled="false"/>
 
             <Button
-                android:id="@+id/simulacija_btn"
+                android:id="@+id/btn_simulation"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
@@ -269,7 +274,8 @@
                 android:fontFamily="sans-serif-medium"
                 android:background="@color/main_color"
                 android:gravity="center"
-                android:onClick="simulationButton"/>
+                android:onClick="simulationButton"
+                android:enabled="false"/>
 
         </LinearLayout>
 

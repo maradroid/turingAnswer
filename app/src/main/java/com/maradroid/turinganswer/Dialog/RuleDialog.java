@@ -1,17 +1,12 @@
-package com.maradroid.turinganswer.Adapter;
+package com.maradroid.turinganswer.Dialog;
 
-import android.app.Activity;
 import android.app.Dialog;
-import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
 import android.support.v4.app.DialogFragment;
 import android.support.v7.app.AlertDialog;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 
@@ -22,7 +17,7 @@ import com.maradroid.turinganswer.R;
 /**
  * Created by mara on 4/6/16.
  */
-public class DialogAdapter extends DialogFragment {
+public class RuleDialog extends DialogFragment {
 
     private Button btnDialogOk;
     private Button btnDialogCancel;
@@ -44,7 +39,7 @@ public class DialogAdapter extends DialogFragment {
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
         LayoutInflater inflater = getActivity().getLayoutInflater();
 
-        View dialogView = inflater.inflate(R.layout.item_dialog, null);
+        View dialogView = inflater.inflate(R.layout.dialog_rule, null);
 
         builder.setView(dialogView);
 

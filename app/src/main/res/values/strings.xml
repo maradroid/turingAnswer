@@ -12,4 +12,7 @@
     <string name="provjeri">Provjeri</string>
     <string name="automat">Automat</string>
     <string name="simulacija">Simulacija</string>
+
+    <string name="neispravan_unos">"Neispravan unos!"</string>
+    <string name="nema_unosa">Nema unosa!</string>
 </resources>

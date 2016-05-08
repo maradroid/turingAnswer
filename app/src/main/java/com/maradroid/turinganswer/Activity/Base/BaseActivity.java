@@ -102,11 +102,6 @@ public class BaseActivity extends AppCompatActivity {
         }
 
         @Override
-        protected void onProgressUpdate(String... values) {
-            super.onProgressUpdate(values);
-        }
-
-        @Override
         protected void onPostExecute(String s) {
             super.onPostExecute(s);
             Log.e("maradroid", "onPostExecute...");

@@ -1,8 +1,7 @@
 package com.maradroid.turinganswer.ListenerManager;
 
-import android.util.Log;
-
-import com.maradroid.turinganswer.Adapter.DialogAdapter;
+import com.maradroid.turinganswer.Dialog.RuleDialog;
+import com.maradroid.turinganswer.ListenerManager.Listeners.InputSettingsListener;
 import com.maradroid.turinganswer.ListenerManager.Listeners.SimulationListener;
 
 /**
@@ -10,16 +9,19 @@ import com.maradroid.turinganswer.ListenerManager.Listeners.SimulationListener;
  */
 abstract public class ListenerManager {
 
-    private static DialogAdapter.DialogDataInterface dataInterface;
+    private static RuleDialog.DialogDataInterface dataInterface;
     private static SimulationListener simulationListener;
+    private static InputSettingsListener inputSettingsListener;
 
-    public static void setDataInterface(DialogAdapter.DialogDataInterface di) {
+    public static void setDataInterface(RuleDialog.DialogDataInterface di) {
         ListenerManager.dataInterface = di;
     }
 
-    public static DialogAdapter.DialogDataInterface getDataInterface() {
+    public static RuleDialog.DialogDataInterface getDataInterface() {
         return dataInterface;
     }
+
+    ///// SIMULATION INTERFACE
 
     public static SimulationListener getSimulationListener() {
         return simulationListener;
@@ -31,5 +33,19 @@ abstract public class ListenerManager {
 
     public static void removeSimulationListener() {
         ListenerManager.simulationListener = null;
+    }
+
+    ///// INPUT SETTINGS LISTENER
+
+    public static void setInputSettingsListener(InputSettingsListener listener) {
+        ListenerManager.inputSettingsListener = listener;
+    }
+
+    public static InputSettingsListener getInputSettingsListener() {
+        return ListenerManager.inputSettingsListener;
+    }
+
+    public static void removeInputSettingsListener() {
+        ListenerManager.inputSettingsListener = null;
     }
 }

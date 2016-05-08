@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@color/white_color">
+
+    <TextView
+        android:id="@+id/tv_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Prihvaćeno stanje:"
+        android:textSize="22sp"
+        android:textColor="@color/colorPrimary"
+        android:textStyle="bold"
+        android:layout_marginLeft="16dp"
+        android:layout_marginTop="16dp"/>
+
+    <LinearLayout
+        android:id="@+id/ll_input"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_below="@id/tv_title"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="20dp"
+        android:layout_marginTop="20dp">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="q"
+            android:textColor="@color/text_gray_color"
+            android:textStyle="bold"
+            android:textSize="17sp"/>
+
+        <EditText
+            android:id="@+id/et_input"
+            android:layout_width="30dp"
+            android:layout_height="wrap_content"
+            android:textSize="17sp"
+            android:textColor="#1E88E5"
+            android:fontFamily="sans-serif-medium"
+            android:background="@drawable/edit_text_background"
+            android:maxLength="2"
+            android:singleLine="true"
+            android:gravity="center"
+            android:inputType="number"/>
+    </LinearLayout>
+
+
+
+    <Button
+        android:id="@+id/btn_submit"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="uredu"
+        android:layout_below="@id/ll_input"
+        android:layout_alignParentRight="true"
+        android:background="@color/white_color"
+        android:textColor="@color/main_color"
+        android:textStyle="bold"/>
+
+    <Button
+        android:id="@+id/btn_cancel"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="odustani"
+        android:layout_below="@id/ll_input"
+        android:layout_toLeftOf="@id/btn_submit"
+        android:background="@color/white_color"
+        android:textColor="@color/main_color"
+        android:textStyle="bold"
+        />
+
+
+</RelativeLayout>

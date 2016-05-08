@@ -1,40 +1,39 @@
 package com.maradroid.turinganswer.Activity.Main;
 
-import android.app.Dialog;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
-import android.support.v7.app.AlertDialog;
-import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
-import android.view.LayoutInflater;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
 
 import com.maradroid.turinganswer.Activity.AutomataSimulation.AutomateActivity;
 import com.maradroid.turinganswer.Activity.Base.BaseActivity;
 import com.maradroid.turinganswer.Activity.CalculateSimulation.SimulationActivity;
-import com.maradroid.turinganswer.Adapter.DialogAdapter;
+import com.maradroid.turinganswer.Dialog.InputSettingsDialog;
+import com.maradroid.turinganswer.Dialog.RuleDialog;
 import com.maradroid.turinganswer.Adapter.RecyclerAdapter;
 import com.maradroid.turinganswer.DataModel.Rules;
 import com.maradroid.turinganswer.DataModel.VariableSnapshot;
 import com.maradroid.turinganswer.ListenerManager.ListenerManager;
+import com.maradroid.turinganswer.ListenerManager.Listeners.InputSettingsListener;
 import com.maradroid.turinganswer.ListenerManager.Listeners.SimulationListener;
 import com.maradroid.turinganswer.R;
 
 import java.util.ArrayList;
+import java.util.concurrent.TimeoutException;
 
 /**
  * Created by mara on 12/15/15.
  */
-public class MainActivity extends BaseActivity implements RecyclerAdapter.ClickListener, DialogAdapter.DialogDataInterface, SimulationListener{
+public class MainActivity extends BaseActivity implements RecyclerAdapter.ClickListener, RuleDialog.DialogDataInterface, SimulationListener, InputSettingsListener{
 
     private RecyclerView mRecycler;
     private RecyclerView.LayoutManager mLayoutManager;
@@ -42,10 +41,13 @@ public class MainActivity extends BaseActivity implements RecyclerAdapter.ClickL
 
     private DialogFragment dialog;
 
-    private EditText etTape;
-    private EditText etAcState;
-    private EditText etEmptySpace;
-    private EditText etUnconditionalJump;
+    private TextView tvTape;
+    private TextView tvAcState;
+    private TextView tvEmptySpace;
+    private TextView tvUnconditionalJump;
+
+    private Button btnAutomat;
+    private Button btnSimulation;
 
     private ArrayList<Rules> rulesArray;
 
@@ -72,10 +74,13 @@ public class MainActivity extends BaseActivity implements RecyclerAdapter.ClickL
 
         this.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
 
-        etTape = (EditText) findViewById(R.id.et_tape);
-        etAcState = (EditText) findViewById(R.id.et_ac_state);
-        etEmptySpace = (EditText) findViewById(R.id.et_empty_space);
-        etUnconditionalJump = (EditText) findViewById(R.id.et_unconditional_jump);
+        tvTape = (TextView) findViewById(R.id.tv_tape);
+        tvAcState = (TextView) findViewById(R.id.tv_ac_state);
+        tvEmptySpace = (TextView) findViewById(R.id.tv_empty_space);
+        tvUnconditionalJump = (TextView) findViewById(R.id.tv_unconditional_jump);
+
+        btnAutomat = (Button) findViewById(R.id.btn_automat);
+        btnSimulation = (Button) findViewById(R.id.btn_simulation);
 
         initRecycler();
     }
@@ -126,10 +131,9 @@ public class MainActivity extends BaseActivity implements RecyclerAdapter.ClickL
 
     private void openDialog(Bundle arg) {
 
-        dialog = new DialogAdapter();
+        dialog = new RuleDialog();
         dialog.setArguments(arg);
         dialog.show(getSupportFragmentManager(), "");
-
 
     }
 
@@ -146,6 +150,74 @@ public class MainActivity extends BaseActivity implements RecyclerAdapter.ClickL
         }
     }
 
+    public void inputSettingsButton(View view) {
+
+        int id = view.getId();
+
+        Bundle bundle = new Bundle();
+
+        switch (id) {
+            case R.id.ll_tape:
+                bundle.putString("type", InputSettingsDialog.TYPE_TAPE);
+                bundle.putString("value", tvTape.getText().toString());
+
+                break;
+
+            case R.id.ll_ac_state:
+                bundle.putString("type", InputSettingsDialog.TYPE_AC_STATE);
+                bundle.putString("value", tvAcState.getText().toString());
+
+                break;
+
+            case R.id.ll_empty_space:
+                bundle.putString("type", InputSettingsDialog.TYPE_EMPTY_SPACE);
+                bundle.putString("value", tvEmptySpace.getText().toString());
+
+                break;
+
+            case R.id.ll_unconditional_jump:
+                bundle.putString("type", InputSettingsDialog.TYPE_UNCONDITIONAL_JUMP);
+                bundle.putString("value", tvUnconditionalJump.getText().toString());
+
+                break;
+        }
+
+        ListenerManager.setInputSettingsListener(this);
+
+        dialog = new InputSettingsDialog();
+        dialog.setArguments(bundle);
+        dialog.show(getSupportFragmentManager(), "");
+    }
+
+    @Override
+    public void onInputSet(String type, String value) {
+
+        if (type != null) {
+
+            switch (type) {
+
+                case InputSettingsDialog.TYPE_TAPE:
+                    tvTape.setText(value);
+                    break;
+
+                case InputSettingsDialog.TYPE_AC_STATE:
+                    tvAcState.setText("q" + value);
+                    break;
+
+                case InputSettingsDialog.TYPE_EMPTY_SPACE:
+                    tvEmptySpace.setText(value);
+                    break;
+
+                case InputSettingsDialog.TYPE_UNCONDITIONAL_JUMP:
+                    tvUnconditionalJump.setText(value);
+                    break;
+            }
+        }
+
+        btnSimulation.setEnabled(false);
+        btnAutomat.setEnabled(false);
+    }
+
     public void addNewFunctionButton(View view) {
         Bundle bundle = new Bundle();
         bundle.putInt("position", -1);
@@ -157,15 +229,15 @@ public class MainActivity extends BaseActivity implements RecyclerAdapter.ClickL
 
         ArrayList<String> tapeArray = new ArrayList<>();
 
-        for (char c : etTape.getText().toString().toCharArray()) {
+        for (char c : tvTape.getText().toString().toCharArray()) {
             tapeArray.add(String.valueOf(c));
         }
 
         VariableSnapshot snapshot = new VariableSnapshot(tapeArray,
                 rulesArray,
-                etUnconditionalJump.getText().toString(),
-                etEmptySpace.getText().toString(),
-                etAcState.getText().toString());
+                tvUnconditionalJump.getText().toString(),
+                tvEmptySpace.getText().toString(),
+                tvAcState.getText().toString());
 
         Log.e("maradroid", "startCalculations...");
         startCalculations(snapshot);
@@ -177,7 +249,7 @@ public class MainActivity extends BaseActivity implements RecyclerAdapter.ClickL
         typeOfSimulation = "automate";
 
         Intent intent = new Intent(MainActivity.this, AutomateActivity.class);
-        intent.putExtra("acState", etAcState.getText().toString());
+        intent.putExtra("acState", tvAcState.getText().toString());
         startActivity(intent);
     }
 
@@ -206,6 +278,9 @@ public class MainActivity extends BaseActivity implements RecyclerAdapter.ClickL
         }
 
         dialog.dismiss();
+
+        btnSimulation.setEnabled(false);
+        btnAutomat.setEnabled(false);
     }
 
     @Override
@@ -221,11 +296,11 @@ public class MainActivity extends BaseActivity implements RecyclerAdapter.ClickL
 
             ArrayList<String> tapeArray = new ArrayList<>();
 
-            for (char c : etTape.getText().toString().toCharArray()) {
+            for (char c : tvTape.getText().toString().toCharArray()) {
                 tapeArray.add(String.valueOf(c));
             }
 
-            VariableSnapshot snapshot = new VariableSnapshot(tapeArray, getStepRulesArray(), etEmptySpace.getText().toString());
+            VariableSnapshot snapshot = new VariableSnapshot(tapeArray, getStepRulesArray(), tvEmptySpace.getText().toString());
 
             if (snapshot != null) {
                 return snapshot;
