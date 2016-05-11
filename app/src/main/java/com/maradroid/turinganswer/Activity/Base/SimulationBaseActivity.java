@@ -90,11 +90,11 @@ public class SimulationBaseActivity extends AppCompatActivity {
 
         StringBuilder tempRule = new StringBuilder();
 
-        tempRule.append("(");
+        tempRule.append("(q");
         tempRule.append(rule.getTrenutnoStanje());
         tempRule.append(",");
         tempRule.append(rule.getProcitanaVrijednost());
-        tempRule.append(") = (");
+        tempRule.append(") = (q");
         tempRule.append(rule.getBuduceStanje());
         tempRule.append(",");
         tempRule.append(rule.getVrijednostPisanja());

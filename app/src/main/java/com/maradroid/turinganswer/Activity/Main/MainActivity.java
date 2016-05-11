@@ -11,11 +11,11 @@ import android.util.Log;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.Button;
-import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.maradroid.turinganswer.Activity.AutomataSimulation.AutomateActivity;
-import com.maradroid.turinganswer.Activity.Base.BaseActivity;
+import com.maradroid.turinganswer.Activity.Base.CalculateBaseActivity;
 import com.maradroid.turinganswer.Activity.CalculateSimulation.SimulationActivity;
 import com.maradroid.turinganswer.Dialog.InputSettingsDialog;
 import com.maradroid.turinganswer.Dialog.RuleDialog;
@@ -28,12 +28,11 @@ import com.maradroid.turinganswer.ListenerManager.Listeners.SimulationListener;
 import com.maradroid.turinganswer.R;
 
 import java.util.ArrayList;
-import java.util.concurrent.TimeoutException;
 
 /**
  * Created by mara on 12/15/15.
  */
-public class MainActivity extends BaseActivity implements RecyclerAdapter.ClickListener, RuleDialog.DialogDataInterface, SimulationListener, InputSettingsListener{
+public class MainActivity extends CalculateBaseActivity implements RecyclerAdapter.ClickListener, RuleDialog.DialogDataInterface, SimulationListener, InputSettingsListener{
 
     private RecyclerView mRecycler;
     private RecyclerView.LayoutManager mLayoutManager;
@@ -46,6 +45,7 @@ public class MainActivity extends BaseActivity implements RecyclerAdapter.ClickL
     private TextView tvEmptySpace;
     private TextView tvUnconditionalJump;
 
+    private Button btnCheck;
     private Button btnAutomat;
     private Button btnSimulation;
 
@@ -72,13 +72,14 @@ public class MainActivity extends BaseActivity implements RecyclerAdapter.ClickL
 
     private void initViews() {
 
-        this.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
+        //this.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
 
         tvTape = (TextView) findViewById(R.id.tv_tape);
         tvAcState = (TextView) findViewById(R.id.tv_ac_state);
         tvEmptySpace = (TextView) findViewById(R.id.tv_empty_space);
         tvUnconditionalJump = (TextView) findViewById(R.id.tv_unconditional_jump);
 
+        btnCheck = (Button) findViewById(R.id.btn_check);
         btnAutomat = (Button) findViewById(R.id.btn_automat);
         btnSimulation = (Button) findViewById(R.id.btn_simulation);
 
@@ -225,22 +226,73 @@ public class MainActivity extends BaseActivity implements RecyclerAdapter.ClickL
         openDialog(bundle);
     }
 
-    public void checkButton(View view) { // preventirati dvostruki klik
+    public void refreshButton(View view) {
 
-        ArrayList<String> tapeArray = new ArrayList<>();
+        btnSimulation.setEnabled(false);
+        btnAutomat.setEnabled(false);
 
-        for (char c : tvTape.getText().toString().toCharArray()) {
-            tapeArray.add(String.valueOf(c));
+        rulesArray.clear();
+        mAdapter.notifyDataSetChanged();
+
+    }
+
+    public void checkButton(View view) {
+
+        String tape = tvTape.getText().toString();
+        String acState = tvAcState.getText().toString();
+        String unconditionalJump = tvUnconditionalJump.getText().toString();
+        String emptySpace = tvEmptySpace.getText().toString();
+
+        if (!tape.isEmpty() && !acState.isEmpty() && !unconditionalJump.isEmpty() && !emptySpace.isEmpty()) {
+
+            if (rulesArray.size() > 0) {
+
+                boolean startStatePresent = false;
+
+                for (Rules rule : rulesArray) {
+
+                    if (rule.getTrenutnoStanje().equals("0")) {
+                        startStatePresent = true;
+                    }
+                }
+
+                if (startStatePresent) {
+
+                    btnCheck.setEnabled(false);
+                    btnAutomat.setEnabled(false);
+                    btnSimulation.setEnabled(false);
+
+                    ArrayList<String> tapeArray = new ArrayList<>();
+
+                    for (char c : tape.toCharArray()) {
+                        tapeArray.add(String.valueOf(c));
+                    }
+
+                    String textTvAcState = acState.substring(1);
+
+                    VariableSnapshot snapshot = new VariableSnapshot(tapeArray,
+                            rulesArray,
+                            unconditionalJump,
+                            emptySpace,
+                            textTvAcState,
+                            btnCheck,
+                            btnAutomat,
+                            btnSimulation);
+
+                    Log.e("maradroid", "startCalculations...");
+                    startCalculations(snapshot);
+
+                } else {
+                    Toast.makeText(this,getResources().getString(R.string.no_start_state),Toast.LENGTH_SHORT).show();
+                }
+
+            } else {
+                Toast.makeText(this,getResources().getString(R.string.no_rules),Toast.LENGTH_SHORT).show();
+            }
+
+        } else {
+            Toast.makeText(this,getResources().getString(R.string.fill_all_fields),Toast.LENGTH_SHORT).show();
         }
-
-        VariableSnapshot snapshot = new VariableSnapshot(tapeArray,
-                rulesArray,
-                tvUnconditionalJump.getText().toString(),
-                tvEmptySpace.getText().toString(),
-                tvAcState.getText().toString());
-
-        Log.e("maradroid", "startCalculations...");
-        startCalculations(snapshot);
     }
 
     public void automateButton(View view) {
@@ -248,8 +300,11 @@ public class MainActivity extends BaseActivity implements RecyclerAdapter.ClickL
         ListenerManager.setSimulationListener(MainActivity.this);
         typeOfSimulation = "automate";
 
+        String textTvAcState = tvAcState.getText().toString();
+        String acState = textTvAcState.substring(1);
+
         Intent intent = new Intent(MainActivity.this, AutomateActivity.class);
-        intent.putExtra("acState", tvAcState.getText().toString());
+        intent.putExtra("acState", acState);
         startActivity(intent);
     }
 
@@ -322,7 +377,7 @@ public class MainActivity extends BaseActivity implements RecyclerAdapter.ClickL
     @Override
     protected void onResume() {
         super.onResume();
-        ListenerManager.removeSimulationListener();
+        ListenerManager.removeSimulationListener(); // provjeriti da li je potrebno
         typeOfSimulation = null;
     }
 }

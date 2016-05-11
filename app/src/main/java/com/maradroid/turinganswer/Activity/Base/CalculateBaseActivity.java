@@ -5,11 +5,17 @@ package com.maradroid.turinganswer.Activity.Base;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.v4.app.DialogFragment;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
+import android.widget.Button;
 
+import com.maradroid.turinganswer.Activity.Main.MainActivity;
 import com.maradroid.turinganswer.DataModel.Rules;
 import com.maradroid.turinganswer.DataModel.VariableSnapshot;
+import com.maradroid.turinganswer.Dialog.ResultDialog;
+import com.maradroid.turinganswer.R;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -18,7 +24,11 @@ import java.util.Comparator;
 /**
  * Created by mara on 4/9/16.
  */
-public class BaseActivity extends AppCompatActivity {
+public class CalculateBaseActivity extends AppCompatActivity {
+
+    private static final int TAG_ACCEPTED = 0;
+    private static final int TAG_NOT_ACCEPTED = 1;
+    private static final int TAG_NOT_EXECUTABLE = 2;
 
     private ArrayList<String> tapeArray;
     private ArrayList<Rules> rulesArray;
@@ -33,6 +43,10 @@ public class BaseActivity extends AppCompatActivity {
     private String emptySpace;
     private String unconditionalJump;
 
+    private Button btnCheck;
+    private Button btnSimulation;
+    private Button btnAutomate;
+
     private int head = 0;
     private int unusedRules = 0;
 
@@ -40,10 +54,10 @@ public class BaseActivity extends AppCompatActivity {
     private long stopTime = 0;
     private long exeTime = 0;
 
-    private class CalculateThread extends AsyncTask<String, String, String> {
+    private class CalculateThread extends AsyncTask<String, String, Integer> {
 
         @Override
-        protected String doInBackground(String... params) {
+        protected Integer doInBackground(String... params) {
             Log.e("maradroid", "doInBackground...");
 
             while (isCancelled() == false) {
@@ -51,7 +65,7 @@ public class BaseActivity extends AppCompatActivity {
 
                 if(state.equals(acState)) {
 
-                    return ("Niz je prihvaćen!");
+                    return TAG_ACCEPTED;
 
                 } else {
 
@@ -85,7 +99,7 @@ public class BaseActivity extends AppCompatActivity {
 
                         } else {
                             // return niz nije prihvacen ili nesto
-                            return "niz nije prihvacen";
+                            return TAG_NOT_ACCEPTED;
                         }
 
                     } else {Log.e("maradroid", "else");
@@ -102,11 +116,48 @@ public class BaseActivity extends AppCompatActivity {
         }
 
         @Override
-        protected void onPostExecute(String s) {
+        protected void onPostExecute(Integer s) {
             super.onPostExecute(s);
             Log.e("maradroid", "onPostExecute...");
-            Log.e("maradroid", s);
+
+            btnCheck.setEnabled(true);
+
+            String title = getResources().getString(R.string.result);
+
+            switch (s) {
+                case TAG_ACCEPTED:
+                    showMessageDialog(title, getResources().getString(R.string.accepted));
+                    btnCheck.setEnabled(true);
+                    btnSimulation.setEnabled(true);
+                    btnAutomate.setEnabled(true);
+                    break;
+
+                case TAG_NOT_ACCEPTED:
+                    showMessageDialog(title, getResources().getString(R.string.not_accepted));
+                    btnCheck.setEnabled(true);
+                    btnSimulation.setEnabled(true);
+                    btnAutomate.setEnabled(true);
+                    break;
+
+                case TAG_NOT_EXECUTABLE:
+                    showMessageDialog(title, getResources().getString(R.string.not_accepted));
+                    btnCheck.setEnabled(true);
+                    btnSimulation.setEnabled(false);
+                    btnAutomate.setEnabled(false);
+                    break;
+            }
         }
+    }
+
+    public void showMessageDialog(String title, String message) {
+
+        Bundle arg = new Bundle();
+        arg.putString("title", title);
+        arg.putString("result", message);
+
+        DialogFragment dialog = new ResultDialog();
+        dialog.setArguments(arg);
+        dialog.show(getSupportFragmentManager(), "");
 
     }
 
@@ -172,11 +223,7 @@ public class BaseActivity extends AppCompatActivity {
 
     public ArrayList<Rules> getStepRulesArray() {
 
-        if (stepRulesArray != null && stepRulesArray.size() > 0) {
-            return stepRulesArray;
-        }
-
-        return null;
+        return stepRulesArray;
     }
 
     private ArrayList<Rules> sortRulesArray(ArrayList<Rules> rules) {
@@ -213,6 +260,10 @@ public class BaseActivity extends AppCompatActivity {
         acState = snapshot.getAcState();
         emptySpace = snapshot.getEmptySpace();
         unconditionalJump = snapshot.getUnconditionalJump();
+
+        btnCheck = snapshot.getBtnCheck();
+        btnAutomate = snapshot.getBtnAutomate();
+        btnSimulation = snapshot.getBtnSimulation();
     }
 
     private void resetVariables() {
@@ -229,6 +280,10 @@ public class BaseActivity extends AppCompatActivity {
         acState = null;
         emptySpace = null;
         unconditionalJump = null;
+
+        btnCheck = null;
+        btnAutomate = null;
+        btnSimulation = null;
 
         head = 0;
         unusedRules = 0;

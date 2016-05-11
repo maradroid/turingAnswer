@@ -9,6 +9,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Toast;
 
 import com.maradroid.turinganswer.DataModel.Rules;
 import com.maradroid.turinganswer.ListenerManager.ListenerManager;
@@ -116,18 +117,38 @@ public class RuleDialog extends DialogFragment {
             @Override
             public void onClick(View v) {
 
-                Rules rule = new Rules(etTrenutnoStanje.getText().toString(),
-                        etProcitanaVrijednost.getText().toString(),
-                        etBuduceStanje.getText().toString(),
-                        etVrijednostPisanja.getText().toString(),
-                        etPomak.getText().toString());
+                String currentState = etTrenutnoStanje.getText().toString();
+                String redValue = etProcitanaVrijednost.getText().toString();
+                String futureState = etBuduceStanje.getText().toString();
+                String writingValue = etVrijednostPisanja.getText().toString();
+                String move = etPomak.getText().toString().toUpperCase();
 
-                if (dialogDataInterface != null) {
-                    dialogDataInterface.addNewRule(isEdited, rule, position);
+                if (!currentState.isEmpty() && !redValue.isEmpty() && !futureState.isEmpty() && !writingValue.isEmpty() && !move.isEmpty()) {
 
+                    if (move.equals("L") || move.equals("D") || move.equals("R")) {
+
+                        Rules rule = new Rules(currentState,
+                                redValue,
+                                futureState,
+                                writingValue,
+                                move);
+
+                        if (dialogDataInterface != null) {
+                            dialogDataInterface.addNewRule(isEdited, rule, position);
+
+                        }
+
+                        position = -1;
+
+                    } else {
+
+                        Toast.makeText(getActivity(), getResources().getString(R.string.wrong_move), Toast.LENGTH_SHORT).show();
+                    }
+
+                } else {
+
+                    Toast.makeText(getActivity(), getResources().getString(R.string.fill_all_fields), Toast.LENGTH_SHORT).show();
                 }
-
-                position = -1;
             }
         });
     }

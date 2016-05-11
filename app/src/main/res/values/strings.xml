@@ -15,4 +15,14 @@
 
     <string name="neispravan_unos">"Neispravan unos!"</string>
     <string name="nema_unosa">Nema unosa!</string>
+
+    <string name="result">Rezultat</string>
+    <string name="accepted">Niz prihvatljiv!</string>
+    <string name="not_accepted">Niz nije prihvatljiv!</string>
+    <string name="not_executable">Nije moguće izvršiti provjeru!</string>
+
+    <string name="fill_all_fields">Popuniti sva polja!</string>
+    <string name="wrong_move">Krivo definiran pomak!</string>
+    <string name="no_rules">Nema funkcija prijelaza!</string>
+    <string name="no_start_state">Ne postoji stanje q0!</string>
 </resources>

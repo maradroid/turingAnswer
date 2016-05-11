@@ -1,5 +1,6 @@
 package com.maradroid.turinganswer.DataModel;
 
+import android.widget.Button;
 import android.widget.TextView;
 
 import java.util.ArrayList;
@@ -19,6 +20,10 @@ public class VariableSnapshot {
     private String emptySpace;
     private String unconditionalJump;
 
+    private Button btnCheck;
+    private Button btnSimulation;
+    private Button btnAutomate;
+
     private int head = 0;
     private int unusedRules = 0;
 
@@ -26,12 +31,15 @@ public class VariableSnapshot {
     }
 
     /** prije racunanja **/
-    public VariableSnapshot(ArrayList<String> tapeArray, ArrayList<Rules> rulesArray, String unconditionalJump, String emptySpace, String acState) {
+    public VariableSnapshot(ArrayList<String> tapeArray, ArrayList<Rules> rulesArray, String unconditionalJump, String emptySpace, String acState, Button btnCheck, Button btnAutomate, Button btnSimulation) {
         this.tapeArray = tapeArray;
         this.rulesArray = rulesArray;
         this.unconditionalJump = unconditionalJump;
         this.emptySpace = emptySpace;
         this.acState = acState;
+        this.btnCheck = btnCheck;
+        this.btnAutomate = btnAutomate;
+        this.btnSimulation = btnSimulation;
     }
 
     /** tijekom racunanja **/
@@ -134,5 +142,17 @@ public class VariableSnapshot {
 
     public void setStepRulesArray(ArrayList<Rules> stepRulesArray) {
         this.stepRulesArray = stepRulesArray;
+    }
+
+    public Button getBtnSimulation() {
+        return btnSimulation;
+    }
+
+    public Button getBtnAutomate() {
+        return btnAutomate;
+    }
+
+    public Button getBtnCheck() {
+        return btnCheck;
     }
 }
