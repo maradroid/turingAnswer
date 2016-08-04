@@ -14,9 +14,14 @@
     <Button
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
+        android:text="Pokreni simulaciju"
+        android:textColor="@color/white_color"
         android:layout_centerHorizontal="true"
-        android:text="Simulacija"
+        android:background="@color/main_color"
+        android:textSize="15sp"
+        android:fontFamily="sans-serif-medium"
+        android:layout_alignParentBottom="true"
+        android:textAllCaps="false"
         android:onClick="simulationButton"/>
 
 </RelativeLayout>

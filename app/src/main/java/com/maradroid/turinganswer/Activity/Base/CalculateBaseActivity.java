@@ -29,6 +29,7 @@ public class CalculateBaseActivity extends AppCompatActivity {
     private static final int TAG_ACCEPTED = 0;
     private static final int TAG_NOT_ACCEPTED = 1;
     private static final int TAG_NOT_EXECUTABLE = 2;
+    private static final int TIME_OFFSET = 2;
 
     private ArrayList<String> tapeArray;
     private ArrayList<Rules> rulesArray;
@@ -52,7 +53,9 @@ public class CalculateBaseActivity extends AppCompatActivity {
 
     private long startTime = 0;
     private long stopTime = 0;
-    private long exeTime = 0;
+    private long exeTime = 0; // total execution time
+    private long singleTime = 0; // single step time
+    private long criticalConstant = 0;
 
     private class CalculateThread extends AsyncTask<String, String, Integer> {
 
@@ -60,12 +63,22 @@ public class CalculateBaseActivity extends AppCompatActivity {
         protected Integer doInBackground(String... params) {
             Log.e("maradroid", "doInBackground...");
 
+            criticalConstant = rulesArray.size() * TIME_OFFSET;
+
             while (isCancelled() == false) {
                 Log.e("maradroid", "while...");
+
+                long criticalTime = criticalConstant * singleTime;
+
+                startTime = System.currentTimeMillis();
 
                 if(state.equals(acState)) {
 
                     return TAG_ACCEPTED;
+
+                } else if (exeTime > criticalTime){
+
+                    return TAG_NOT_EXECUTABLE;
 
                 } else {
 
@@ -110,6 +123,16 @@ public class CalculateBaseActivity extends AppCompatActivity {
                         applyRule();
                     }
                 }
+
+                stopTime = System.currentTimeMillis();
+
+                long tempTime = stopTime - startTime; // step duration
+
+                if (singleTime < tempTime) { // if new step time is smaller then previous one, set new step time
+                    singleTime = tempTime;
+                }
+
+                exeTime += tempTime;
             }
 
             return null;
@@ -140,7 +163,7 @@ public class CalculateBaseActivity extends AppCompatActivity {
                     break;
 
                 case TAG_NOT_EXECUTABLE:
-                    showMessageDialog(title, getResources().getString(R.string.not_accepted));
+                    showMessageDialog(title, getResources().getString(R.string.not_executable));
                     btnCheck.setEnabled(true);
                     btnSimulation.setEnabled(false);
                     btnAutomate.setEnabled(false);

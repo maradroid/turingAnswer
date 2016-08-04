@@ -13,13 +13,14 @@
         android:id="@+id/btn_simulation"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="POKRENI SIMULACIJU!"
+        android:text="Pokreni simulaciju"
         android:textColor="@color/white_color"
         android:onClick="startSimulation"
         android:background="@color/main_color"
         android:textSize="15sp"
         android:fontFamily="sans-serif-medium"
-        android:layout_alignParentBottom="true"/>
+        android:layout_alignParentBottom="true"
+        android:textAllCaps="false"/>
 
     <HorizontalScrollView
         android:id="@+id/hsv_tape"
@@ -31,11 +32,13 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textSize="23dp"
+            android:text="fddfvdd"
             android:textColor="@color/text_gray_color"
             android:id="@+id/tv_tape"
             android:gravity="center"
             android:layout_marginTop="2dp"
-            android:fontFamily="sans-serif-medium"/>
+            android:fontFamily="sans-serif-medium"
+            android:layout_gravity="center"/>
     </HorizontalScrollView>
 
     <View
