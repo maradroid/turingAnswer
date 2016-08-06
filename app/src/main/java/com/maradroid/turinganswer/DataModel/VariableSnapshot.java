@@ -14,6 +14,7 @@ public class VariableSnapshot {
     private ArrayList<Rules> rulesArray;
     private ArrayList<Rules> appRulesArray;
     private ArrayList<Rules> stepRulesArray;
+    private ArrayList<String> allUsedStates;
 
     private String state = "0";
     private String acState;
@@ -59,9 +60,10 @@ public class VariableSnapshot {
     }
 
     /** za automat **/
-    public VariableSnapshot(ArrayList<Rules> rulesArray, ArrayList<Rules> appRulesArray) {
+    public VariableSnapshot(ArrayList<Rules> rulesArray, ArrayList<Rules> appRulesArray, ArrayList<String> allUsedStates) {
         this.rulesArray = rulesArray;
         this.appRulesArray = appRulesArray;
+        this.allUsedStates = allUsedStates;
     }
 
     public ArrayList<String> getTapeArray() {
@@ -142,6 +144,14 @@ public class VariableSnapshot {
 
     public void setStepRulesArray(ArrayList<Rules> stepRulesArray) {
         this.stepRulesArray = stepRulesArray;
+    }
+
+    public ArrayList<String> getAllUsedStates() {
+        return allUsedStates;
+    }
+
+    public void setAllUsedStates(ArrayList<String> allUsedStates) {
+        this.allUsedStates = allUsedStates;
     }
 
     public Button getBtnSimulation() {

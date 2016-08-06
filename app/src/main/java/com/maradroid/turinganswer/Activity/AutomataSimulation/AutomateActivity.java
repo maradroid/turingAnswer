@@ -8,6 +8,7 @@ import android.webkit.WebChromeClient;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
+import android.widget.Button;
 
 import com.maradroid.turinganswer.Activity.Base.AutomateBaseActivity;
 import com.maradroid.turinganswer.DataModel.Rules;
@@ -28,10 +29,13 @@ public class AutomateActivity extends AutomateBaseActivity {
     private ArrayList<Rules> rulesArray;
     private ArrayList<Rules> appRulesArray;
     private ArrayList<String> nodesArray;
+    private ArrayList<String> allUsedStates;
 
     private String acState;
     private String nodesString;
     private String linksString;
+
+    private Button button;
 
     private boolean dataSet;
 
@@ -44,6 +48,7 @@ public class AutomateActivity extends AutomateBaseActivity {
         getData();
         getNodes();
         getLinks();
+        initButton();
         initWebView();
     }
 
@@ -69,6 +74,7 @@ public class AutomateActivity extends AutomateBaseActivity {
 
             rulesArray = snapshot.getRulesArray();
             appRulesArray = snapshot.getAppRulesArray();
+            allUsedStates = snapshot.getAllUsedStates();
         }
     }
 
@@ -172,6 +178,10 @@ public class AutomateActivity extends AutomateBaseActivity {
         return -1;
     }
 
+    private void initButton() {
+        button = (Button) findViewById(R.id.btn_simulation);
+    }
+
     private void initWebView() {
 
         myWebView = (WebView) findViewById(R.id.webview);
@@ -200,12 +210,15 @@ public class AutomateActivity extends AutomateBaseActivity {
                     view.loadUrl(javascript);
                     dataSet = true;
 
+                } else {
+                    button.setEnabled(true);
                 }
+
             }
         });
 
         if (appRulesArray != null && acState != null) {
-            setSimulationVariables(appRulesArray, acState, myWebView);
+            setSimulationVariables(appRulesArray, allUsedStates, acState, myWebView, button);
         }
 
         //myWebView.loadUrl("javascript:sessionStorage.setItem(\"nodes\", JSON.stringify([{atom:'0',size:12,id:0},{atom:'1',size:12,id:1},{atom:'2',size:12,id:2},{atom:'3',size:12,id:3},{atom:'4',size:12,id:4}]));");
@@ -222,7 +235,30 @@ public class AutomateActivity extends AutomateBaseActivity {
         //myWebView.loadUrl("javascript:setJSON([{atom:'0',size:12,id:0},{atom:'1',size:12,id:1},{atom:'2',size:12,id:2},{atom:'3',size:12,id:3},{atom:'4',size:12,id:4}]);");
         //myWebView.loadUrl("javascript:changeCircleColor('circle_3');");
         //myWebView.loadUrl("javascript:changeCircleColor('circle_2');");
-        startSimulation();
+
+        if (button.getText().equals(getString(R.string.reset))) {
+            button.setEnabled(false);
+            myWebView.loadUrl("file:///android_asset/test_page.html");
+            button.setText(getString(R.string.start_simulation));
+
+        }else if (isRunning()) {
+            stopSimulation();
+            button.setText(getString(R.string.start_simulation));
+
+        } else {
+            startSimulation();
+            button.setText(getString(R.string.stop_simulation));
+        }
+
     }
 
+    @Override
+    protected void onPause() {
+        super.onPause();
+
+        if (isRunning()) {
+            stopSimulation();
+            button.setText(getString(R.string.start_simulation));
+        }
+    }
 }

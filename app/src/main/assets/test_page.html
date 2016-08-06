@@ -128,6 +128,11 @@ function changeCircleColor(id, color){
 	document.getElementById(id).style.fill = color;
 }
 
+function changeTwoCirclesColor(id1, color1, id2, color2){
+	document.getElementById(id1).style.fill = color1;
+	document.getElementById(id2).style.fill = color2;
+}
+
 function changeFinalCircleColor(id, color){
 	document.getElementById(id).style.fill = color;
 	document.getElementById('circle_x').style.fill = color;
@@ -156,7 +161,7 @@ svg.append('g').selectAll('circle')
 .attr('cx',function(d) { if(d.acc == 1)return d.x; else return;})
 .attr('cy',function(d) { if(d.acc == 1)return d.y; else return; })
 .attr('r',function(d) { if(d.acc == 1)return '20'; else return; })
-.attr('id','circle_x')
+.attr('id', function(d) { if(d.acc==1) return 'circle_x';})
 .attr('style','stroke:#0D47A1; stroke-width:2');
  
 svg.append('g').selectAll('polyline')

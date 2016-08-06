@@ -35,6 +35,7 @@ public class CalculateBaseActivity extends AppCompatActivity {
     private ArrayList<Rules> rulesArray;
     private ArrayList<Rules> appRulesArray;
     private ArrayList<Rules> stepRulesArray;
+    private ArrayList<String> allUsedStates;
     private ArrayList<VariableSnapshot> snapshotArray;
 
     private Rules appRule;
@@ -219,6 +220,7 @@ public class CalculateBaseActivity extends AppCompatActivity {
         state = appRule.getBuduceStanje();
 
         stepRulesArray.add(appRule);
+        allUsedStates.add(appRule.getBuduceStanje());
 
         if(appRule.getPomak().equals("L") || appRule.getPomak().equals("l")){
 
@@ -247,6 +249,11 @@ public class CalculateBaseActivity extends AppCompatActivity {
     public ArrayList<Rules> getStepRulesArray() {
 
         return stepRulesArray;
+    }
+
+    public ArrayList<String> getAllUsedStates() {
+
+        return allUsedStates;
     }
 
     private ArrayList<Rules> sortRulesArray(ArrayList<Rules> rules) {
@@ -296,6 +303,8 @@ public class CalculateBaseActivity extends AppCompatActivity {
         appRulesArray = new ArrayList<>();
         snapshotArray = new ArrayList<>();
         stepRulesArray = new ArrayList<>();
+        allUsedStates = new ArrayList<>();
+        allUsedStates.add("0");
 
         appRule = null;
 

@@ -308,7 +308,7 @@ public class MainActivity extends CalculateBaseActivity implements RecyclerAdapt
         startActivity(intent);
     }
 
-    public void simulationButton(View view) { // napraviti provjeru unosa!!
+    public void simulationButton(View view) {
 
         ListenerManager.setSimulationListener(MainActivity.this);
         typeOfSimulation = "stepByStep";
@@ -318,7 +318,7 @@ public class MainActivity extends CalculateBaseActivity implements RecyclerAdapt
     }
 
     @Override
-    public void addNewRule(boolean isEdited, Rules rule, int position) {///////////////// postaviti provjere ispravnosti
+    public void addNewRule(boolean isEdited, Rules rule, int position) {
 
         if (rule != null) {
 
@@ -363,7 +363,7 @@ public class MainActivity extends CalculateBaseActivity implements RecyclerAdapt
 
         } else if (typeOfSimulation.equals("automate")) {
 
-            VariableSnapshot snapshot = new VariableSnapshot(rulesArray, getStepRulesArray());
+            VariableSnapshot snapshot = new VariableSnapshot(rulesArray, getStepRulesArray(), getAllUsedStates());
 
             if (snapshot != null) {
                 return snapshot;
