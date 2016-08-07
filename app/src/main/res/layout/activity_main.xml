@@ -263,7 +263,8 @@
                 android:fontFamily="sans-serif-medium"
                 android:background="@color/main_color"
                 android:gravity="center"
-                android:onClick="checkButton"/>
+                android:onClick="checkButton"
+                android:stateListAnimator="@null"/>
 
             <Button
                 android:id="@+id/btn_automat"
@@ -272,13 +273,14 @@
                 android:layout_weight="1"
                 android:text="@string/automat"
                 android:textAllCaps="false"
-                android:textColor="@color/white_color"
+                android:textColor="@drawable/button_text_color"
                 android:textSize="15sp"
                 android:fontFamily="sans-serif-medium"
                 android:background="@color/main_color"
                 android:gravity="center"
                 android:onClick="automateButton"
-                android:enabled="false"/>
+                android:enabled="false"
+                android:stateListAnimator="@null"/>
 
             <Button
                 android:id="@+id/btn_simulation"
@@ -287,13 +289,14 @@
                 android:layout_weight="1"
                 android:text="@string/simulacija"
                 android:textAllCaps="false"
-                android:textColor="@color/white_color"
+                android:textColor="@drawable/button_text_color"
                 android:textSize="15sp"
                 android:fontFamily="sans-serif-medium"
                 android:background="@color/main_color"
                 android:gravity="center"
                 android:onClick="simulationButton"
-                android:enabled="false"/>
+                android:enabled="false"
+                android:stateListAnimator="@null" />
 
         </LinearLayout>
 

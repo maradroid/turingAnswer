@@ -377,7 +377,15 @@ public class MainActivity extends CalculateBaseActivity implements RecyclerAdapt
     @Override
     protected void onResume() {
         super.onResume();
-        ListenerManager.removeSimulationListener(); // provjeriti da li je potrebno
+
+        ListenerManager.removeSimulationListener();
         typeOfSimulation = null;
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+
+        stopCalculations();
     }
 }

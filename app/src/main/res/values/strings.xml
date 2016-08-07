@@ -29,4 +29,7 @@
     <string name="start_simulation">Pokreni simulaciju</string>
     <string name="stop_simulation">Zaustavi simulaciju</string>
     <string name="reset">Reset</string>
+
+    <string name="ok">Uredu</string>
+    <string name="cancel">Odustani</string>
 </resources>

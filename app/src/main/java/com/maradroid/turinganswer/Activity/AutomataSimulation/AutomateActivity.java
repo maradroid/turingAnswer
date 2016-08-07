@@ -11,6 +11,7 @@ import android.webkit.WebViewClient;
 import android.widget.Button;
 
 import com.maradroid.turinganswer.Activity.Base.AutomateBaseActivity;
+import com.maradroid.turinganswer.CustomWebView.MyWebView;
 import com.maradroid.turinganswer.DataModel.Rules;
 import com.maradroid.turinganswer.DataModel.VariableSnapshot;
 import com.maradroid.turinganswer.ListenerManager.ListenerManager;
@@ -24,7 +25,7 @@ import java.util.ArrayList;
  */
 public class AutomateActivity extends AutomateBaseActivity {
 
-    private WebView myWebView;
+    private MyWebView myWebView;
 
     private ArrayList<Rules> rulesArray;
     private ArrayList<Rules> appRulesArray;
@@ -184,12 +185,14 @@ public class AutomateActivity extends AutomateBaseActivity {
 
     private void initWebView() {
 
-        myWebView = (WebView) findViewById(R.id.webview);
-        //myWebView.setWebChromeClient(new WebChromeClient());
+        myWebView = (MyWebView) findViewById(R.id.webview);
         WebSettings webSettings = myWebView.getSettings();
         webSettings.setJavaScriptEnabled(true);
         webSettings.setBuiltInZoomControls(true);
+        webSettings.setUseWideViewPort(true);
+        webSettings.setLoadWithOverviewMode(true);
         webSettings.setSupportZoom(true);
+        webSettings.setDisplayZoomControls(false);
 
         myWebView.setWebViewClient(new WebViewClient(){
             @Override
@@ -212,8 +215,9 @@ public class AutomateActivity extends AutomateBaseActivity {
 
                 } else {
                     button.setEnabled(true);
-                }
+                    myWebView.setScroll(true); // iz nekog razloga prije se pozove onaj interface nego invalidate pa zbog toga ovo radi
 
+                }
             }
         });
 
@@ -221,20 +225,12 @@ public class AutomateActivity extends AutomateBaseActivity {
             setSimulationVariables(appRulesArray, allUsedStates, acState, myWebView, button);
         }
 
-        //myWebView.loadUrl("javascript:sessionStorage.setItem(\"nodes\", JSON.stringify([{atom:'0',size:12,id:0},{atom:'1',size:12,id:1},{atom:'2',size:12,id:2},{atom:'3',size:12,id:3},{atom:'4',size:12,id:4}]));");
         myWebView.loadUrl("file:///android_asset/test_page.html");
-        //myWebView.loadUrl("javascript:changeCircleColor('circle_3');");
-        //myWebView.loadUrl("javascript:setJSON([{atom:'0',size:12,id:0},{atom:'1',size:12,id:1},{atom:'2',size:12,id:2},{atom:'3',size:12,id:3},{atom:'4',size:12,id:4}]);");
 
     }
 
     public void simulationButton(View v) {
         Log.e("maradroid", "Simulacija");
-        //myWebView.loadUrl("javascript:document.getElementById('circle_1').style.fill = '#ccc';");
-        //myWebView.loadUrl("javascript:changeCircleColor('circle_3');");
-        //myWebView.loadUrl("javascript:setJSON([{atom:'0',size:12,id:0},{atom:'1',size:12,id:1},{atom:'2',size:12,id:2},{atom:'3',size:12,id:3},{atom:'4',size:12,id:4}]);");
-        //myWebView.loadUrl("javascript:changeCircleColor('circle_3');");
-        //myWebView.loadUrl("javascript:changeCircleColor('circle_2');");
 
         if (button.getText().equals(getString(R.string.reset))) {
             button.setEnabled(false);

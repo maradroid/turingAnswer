@@ -3,6 +3,7 @@ package com.maradroid.turinganswer.Activity.Base;
 import android.os.AsyncTask;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
+import android.widget.Button;
 import android.widget.TextView;
 
 import com.maradroid.turinganswer.DataModel.Rules;
@@ -23,12 +24,20 @@ public class SimulationBaseActivity extends AppCompatActivity {
     private TextView tvTempRules;
     private TextView tvTempTape;
 
+    private Button button;
+
     private String emptySpace;
 
     private StringBuilder tempTape;
     private StringBuilder tempRules;
 
+    private CalculateThread calculateThread;
+
+    private VariableSnapshot snapshot;
+
     private int head = 0;
+
+    private boolean isRunning = false;
 
     private class CalculateThread extends AsyncTask<String, String[], String> {
 
@@ -37,6 +46,9 @@ public class SimulationBaseActivity extends AppCompatActivity {
             Log.e("maradroid", "simulation... " + rulesArray.size());
 
             for (Rules rule : rulesArray) {
+
+                if (isCancelled())
+                    return null;
 
                 String[] tempValues2 = getTempValues(rule);
 
@@ -80,7 +92,16 @@ public class SimulationBaseActivity extends AppCompatActivity {
 
             tvTape.setText(tapeArray.toString());
             tvTape.setTextColor(getResources().getColor(R.color.main_color));
+            isRunning = false;
+            button.setText(getString(R.string.reset));
 
+        }
+
+        @Override
+        protected void onCancelled(String s) {
+            super.onCancelled(s);
+            isRunning = false;
+            setVariables();
         }
     }
 
@@ -130,17 +151,42 @@ public class SimulationBaseActivity extends AppCompatActivity {
         }
     }
 
-    public void startSimulation(VariableSnapshot snapshot) {
+    public void startSimulation() {
 
-        setVariables(snapshot);
+        //setVariables(snapshot);
+        isRunning = true;
 
         if (tapeArray != null && rulesArray != null && emptySpace != null) {
-            CalculateThread calculateThread = new CalculateThread();
+            calculateThread = new CalculateThread();
             calculateThread.execute();
         }
     }
 
-    private void setVariables(VariableSnapshot snapshot) {
+    public void stopSimulation() {
+
+        AsyncTask.Status status = calculateThread.getStatus();
+
+        if (status == AsyncTask.Status.RUNNING || status == AsyncTask.Status.PENDING) {
+            calculateThread.cancel(true);
+        }
+    }
+
+    public boolean isRunning() {
+        return isRunning;
+    }
+
+    public void setButton(Button button) {
+        this.button = button;
+    }
+
+    public void setVariables(VariableSnapshot snapshot) {
+
+        this.snapshot = snapshot;
+
+        setVariables();
+    }
+
+    private void setVariables() {
 
         resetVariables();
 
@@ -149,6 +195,7 @@ public class SimulationBaseActivity extends AppCompatActivity {
         this.emptySpace = snapshot.getEmptySpace();
         this.tempRules = new StringBuilder();
         this.tempTape = new StringBuilder();
+        this.tvTape.setText(snapshot.getTapeArray().toString());
     }
 
     private void resetVariables() {
@@ -158,6 +205,8 @@ public class SimulationBaseActivity extends AppCompatActivity {
         this.emptySpace = null;
         this.tempRules = null;
         this.tempTape = null;
+        this.tvTempRules.setText("");
+        this.tvTempTape.setText("");
         this.head = 0;
 
         tvTape.setTextColor(getResources().getColor(R.color.text_gray_color));

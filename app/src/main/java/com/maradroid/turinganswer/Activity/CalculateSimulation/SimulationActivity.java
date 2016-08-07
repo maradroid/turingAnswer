@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
+import android.widget.Button;
 import android.widget.TextView;
 
 import com.maradroid.turinganswer.Activity.Base.SimulationBaseActivity;
@@ -21,6 +22,8 @@ public class SimulationActivity extends SimulationBaseActivity {
     private TextView tvTape;
     private TextView tvTempRules;
     private TextView tvTempTape;
+
+    private Button button;
 
     private VariableSnapshot snapshot;
 
@@ -46,6 +49,7 @@ public class SimulationActivity extends SimulationBaseActivity {
         tvTape = (TextView) findViewById(R.id.tv_tape);
         tvTempTape = (TextView) findViewById(R.id.tv_temp_tape);
         tvTempRules = (TextView)  findViewById(R.id.tv_temp_rule);
+        button = (Button) findViewById(R.id.btn_simulation);
 
         setTextViews(tvTape, tvTempRules, tvTempTape);
     }
@@ -58,7 +62,9 @@ public class SimulationActivity extends SimulationBaseActivity {
             snapshot = simulationListener.getVariableSnapshot();
 
             if (snapshot != null) {
+                setButton(button);
                 setTape();
+                setVariables(snapshot);
             }
         }
     }
@@ -68,13 +74,37 @@ public class SimulationActivity extends SimulationBaseActivity {
         if (snapshot.getTapeArray() != null) {
             tvTape.setText(snapshot.getTapeArray().toString());
         }
+
     }
 
     public void startSimulation(View view) {
 
-        if (snapshot != null) {
+        if (isRunning()) {
+            stopSimulation();
+            button.setText(getString(R.string.start_simulation));
 
-            startSimulation(snapshot);
+        } else if (button.getText().equals(getString(R.string.reset)) && snapshot != null) {
+            setVariables(snapshot);
+            button.setText(getString(R.string.start_simulation));
+
+        } else if (snapshot != null && !isRunning()) {
+            button.setText(getString(R.string.stop_simulation));
+            startSimulation();
+
+        }
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+
+        if (isRunning()) {
+            stopSimulation();
+            button.setText(getString(R.string.start_simulation));
+
+            if (snapshot != null) {
+                setVariables(snapshot);
+            }
         }
     }
 }

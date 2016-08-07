@@ -37,24 +37,25 @@
         android:id="@+id/btn_submit"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="uredu"
+        android:text="@string/ok"
         android:layout_below="@id/et_input"
         android:layout_alignParentRight="true"
         android:background="@color/white_color"
         android:textColor="@color/main_color"
-        android:textStyle="bold"/>
+        android:textStyle="bold"
+        android:stateListAnimator="@null"/>
 
     <Button
         android:id="@+id/btn_cancel"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="odustani"
+        android:text="@string/cancel"
         android:layout_below="@id/et_input"
         android:layout_toLeftOf="@id/btn_submit"
         android:background="@color/white_color"
         android:textColor="@color/main_color"
         android:textStyle="bold"
-        />
+        android:stateListAnimator="@null"/>
 
 
 </RelativeLayout>

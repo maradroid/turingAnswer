@@ -49,6 +49,8 @@ public class CalculateBaseActivity extends AppCompatActivity {
     private Button btnSimulation;
     private Button btnAutomate;
 
+    private CalculateThread calculateThread;
+
     private int head = 0;
     private int unusedRules = 0;
 
@@ -66,7 +68,7 @@ public class CalculateBaseActivity extends AppCompatActivity {
 
             criticalConstant = rulesArray.size() * TIME_OFFSET;
 
-            while (isCancelled() == false) {
+            while (!isCancelled()) {
                 Log.e("maradroid", "while...");
 
                 long criticalTime = criticalConstant * singleTime;
@@ -274,10 +276,21 @@ public class CalculateBaseActivity extends AppCompatActivity {
 
         setVariables(snapshot);
         Log.e("maradroid", "starting new thread...");
-        CalculateThread calculateThread = new CalculateThread();
+        calculateThread = new CalculateThread();
         calculateThread.execute();
 
+    }
 
+    protected void stopCalculations() {
+
+        if (calculateThread != null) {
+
+            AsyncTask.Status status = calculateThread.getStatus();
+
+            if (status == AsyncTask.Status.RUNNING || status == AsyncTask.Status.PENDING) {
+                calculateThread.cancel(true);
+            }
+        }
     }
 
     private void setVariables(VariableSnapshot snapshot) {
